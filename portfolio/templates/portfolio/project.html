@@ -1,0 +1,14 @@
+{% extends 'portfolio/base.html' %}
+
+{% block content %}
+
+    <div class="text-center my-3">
+        <div class="col-md-10">
+            <img src="{{ project.image.url }}" class="img-fluid mb-2">
+            <h1>{{project.title}}</h1>
+            <h2>{{project.description}}</h2>
+            <a href="{{project.url}}">Project Link</a>
+        </div>
+    </div>
+
+{% endblock %}
