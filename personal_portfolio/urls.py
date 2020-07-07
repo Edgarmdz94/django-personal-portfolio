@@ -24,6 +24,8 @@ app_name = 'portfolio'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.login, name = 'login'),
+    path('createaccount/', views.signup, name='signup'),
+    path('welcome/', views.welcome, name='welcome'),
     path('home/', views.home, name = 'home'),
     path('project/<int:project_id>', views.project, name='project'),
     path('blog/', include('blog.urls')),
