@@ -12,3 +12,13 @@ class Project(models.Model):
         return self.title
 
 
+class Login(models.Model):
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    password = models.CharField(max_length=50)
+    last_login = models.DateTimeField(auto_now=True)
+    signup_date = models.DateTimeField(auto_now_add=True)
+
+
+
