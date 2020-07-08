@@ -2,6 +2,18 @@ from django.shortcuts import render, get_object_or_404
 from .models import Project, User
 
 def login(request):
+    session = request.session
+    if session.__contains__('logged') and session.get('logged'):
+        projects = Project.objects.all()
+        return render(request, 'portfolio/home.html', {'projects': projects})
+    else:
+        return render(request, 'portfolio/login.html')
+
+def logout(request):
+    session = request.session
+    if 'logged' in session.keys():
+        session.__delitem__('logged')
+
     return render(request, 'portfolio/login.html')
 
 def signup(request):
@@ -23,13 +35,19 @@ def welcome(request):
     
 
 def home(request):
-    email = request.GET.get('email')
-    password = request.GET.get('password')
     projects = Project.objects.all()
     user = None
     try:
-        user = User.objects.get(email=email, password=password)
-        return render(request, 'portfolio/home.html', {'projects': projects, 'user': user})
+        num_of_visits  = request.session.get('visits', 0)
+        is_user_logged = request.session.get('logged', False)
+        if not is_user_logged:
+            email = request.GET.get('email')
+            password = request.GET.get('password')
+            user = User.objects.get(email=email, password=password)
+            request.session['name']   = f'{user.first_name} {user.last_name}'
+            request.session['logged'] = True
+            request.session['visits'] = num_of_visits + 1
+        return render(request, 'portfolio/home.html', {'projects': projects})
     except User.DoesNotExist:
         return render(request, 'portfolio/login.html', {'message': 'Incorrect user/password.'})
     
